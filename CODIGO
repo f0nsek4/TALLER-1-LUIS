@@ -8,34 +8,33 @@ const int pinledr4 = 4;
 int bottom1 = A0;  // botón suma 2
 int bottom2 = A1;  // botón suma 1
 int bottom3 = A2;  // botón reset
-int bottom4 = A3;  // botón modo especial
+int bottom4 = A3;  // botón cambio modo
 
 int clics = 0;
 
+int modo = 0; // 0= complemento a 2, 1 = complemento a 1
+bool botonModoPresionado = false; // cambio de modo solo una vez por pulsación
+
 void setup() {
-  // Configurar LEDs como salida
   pinMode(pinled, OUTPUT);
   pinMode(pinledr1, OUTPUT);
   pinMode(pinledr2, OUTPUT);
   pinMode(pinledr3, OUTPUT);
   pinMode(pinledr4, OUTPUT);
 
-  // Configurar botones como entrada con resistencia pull-up
   pinMode(bottom1, INPUT_PULLUP);
   pinMode(bottom2, INPUT_PULLUP);
   pinMode(bottom3, INPUT_PULLUP);
   pinMode(bottom4, INPUT_PULLUP);
 
-  // Inicialización
   digitalWrite(pinled,  LOW);
   digitalWrite(pinledr1, LOW);
   digitalWrite(pinledr2, LOW);
   digitalWrite(pinledr3, LOW);
   digitalWrite(pinledr4, LOW);
 }
-
 void loop() {
-  // Leer botones de incremento
+  // Botones para sumar
   if (digitalRead(bottom2) == HIGH) {
     clics = clics + 1;
     delay(200);
@@ -44,73 +43,143 @@ void loop() {
     clics = clics + 2;
     delay(200); 
   }
+// Botón cambio de modo
+  if (digitalRead(bottom4) == LOW && !botonModoPresionado) {
+    modo = 1 - modo;  // alterna entre 0 y 1
+    botonModoPresionado = true;
+    delay(50); 
+  }
+  if (digitalRead(bottom4) == HIGH) {
+    botonModoPresionado = false; // resetea al soltar el botón
+  }
+  // -----------------------------------
 
-  // Mostrar según valor de clics
-  if (clics == 1) {
-    digitalWrite(pinled,0);
-    digitalWrite(pinledr1,1);
-    digitalWrite(pinledr2,1);
-    digitalWrite(pinledr3,1);
-    digitalWrite(pinledr4,1);
+  // Mostrar según el modo
+  if (modo == 1) {
+    // MODO COMPLEMENTO a 2
+    if (clics == 1) {
+      digitalWrite(pinled,0);
+      digitalWrite(pinledr1,1);
+      digitalWrite(pinledr2,1);
+      digitalWrite(pinledr3,1);
+      digitalWrite(pinledr4,1);
+    }
+    if (clics == 2) {
+      digitalWrite(pinled,0);
+      digitalWrite(pinledr1,1);
+      digitalWrite(pinledr2,1);
+      digitalWrite(pinledr3,1);
+      digitalWrite(pinledr4,0);
+    }
+    if (clics == 3) {
+      digitalWrite(pinled,0);
+      digitalWrite(pinledr1,1);
+      digitalWrite(pinledr2,1);
+      digitalWrite(pinledr3,0);
+      digitalWrite(pinledr4,1);
+    }
+    if (clics == 4) {
+      digitalWrite(pinled,0);
+      digitalWrite(pinledr1,1);
+      digitalWrite(pinledr2,1);
+      digitalWrite(pinledr3,0);
+      digitalWrite(pinledr4,0);
+    }
+    if (clics == 5) {
+      digitalWrite(pinled,0);
+      digitalWrite(pinledr1,1);
+      digitalWrite(pinledr2,0);
+      digitalWrite(pinledr3,1);
+      digitalWrite(pinledr4,1);
+    }
+    if (clics == 6) {
+      digitalWrite(pinled,0);
+      digitalWrite(pinledr1,1);
+      digitalWrite(pinledr2,0);
+      digitalWrite(pinledr3,1);
+      digitalWrite(pinledr4,0);
+    }
+    if (clics == 7) {
+      digitalWrite(pinled,0);
+      digitalWrite(pinledr1,1);
+      digitalWrite(pinledr2,0);
+      digitalWrite(pinledr3,0);
+      digitalWrite(pinledr4,1);
+    }
+    if (clics > 7) {
+      digitalWrite(pinled,1);
+      digitalWrite(pinledr1,0);
+      digitalWrite(pinledr2,0);
+      digitalWrite(pinledr3,0);
+      digitalWrite(pinledr4,0);
+    }
+  } else {
+    // MODO COMPLEMENTO a 1
+    if (clics == 1) {
+      digitalWrite(pinled,0);
+      digitalWrite(pinledr1,1);
+      digitalWrite(pinledr2,1);
+      digitalWrite(pinledr3,1);
+      digitalWrite(pinledr4,0);
+    }
+    if (clics == 2) {
+      digitalWrite(pinled,0);
+      digitalWrite(pinledr1,1);
+      digitalWrite(pinledr2,1);
+      digitalWrite(pinledr3,0);
+      digitalWrite(pinledr4,1);
+    }
+    if (clics == 3) {
+      digitalWrite(pinled,0);
+      digitalWrite(pinledr1,1);
+      digitalWrite(pinledr2,1);
+      digitalWrite(pinledr3,0);
+      digitalWrite(pinledr4,0);
+    }
+    if (clics == 4) {
+      digitalWrite(pinled,0);
+      digitalWrite(pinledr1,1);
+      digitalWrite(pinledr2,0);
+      digitalWrite(pinledr3,1);
+      digitalWrite(pinledr4,1);
+    }
+    if (clics == 5) {
+      digitalWrite(pinled,0);
+      digitalWrite(pinledr1,1);
+      digitalWrite(pinledr2,0);
+      digitalWrite(pinledr3,1);
+      digitalWrite(pinledr4,0);
+    }
+    if (clics == 6) {
+      digitalWrite(pinled,0);
+      digitalWrite(pinledr1,1);
+      digitalWrite(pinledr2,0);
+      digitalWrite(pinledr3,0);
+      digitalWrite(pinledr4,1);
+    }
+    if (clics == 7) {
+      digitalWrite(pinled,0);
+      digitalWrite(pinledr1,1);
+      digitalWrite(pinledr2,0);
+      digitalWrite(pinledr3,0);
+      digitalWrite(pinledr4,0);
+    }
+    if (clics > 7) {
+      digitalWrite(pinled,1);
+      digitalWrite(pinledr1,0);
+      digitalWrite(pinledr2,0);
+      digitalWrite(pinledr3,0);
+      digitalWrite(pinledr4,0);
+    }
   }
-  if (clics == 2) {
-    digitalWrite(pinled,0);
-    digitalWrite(pinledr1,1);
-    digitalWrite(pinledr2,1);
-    digitalWrite(pinledr3,1);
-    digitalWrite(pinledr4,0);
-  }
-  if (clics == 3) {
-    digitalWrite(pinled,0);
-    digitalWrite(pinledr1,1);
-    digitalWrite(pinledr2,1);
-    digitalWrite(pinledr3,0);
-    digitalWrite(pinledr4,1);
-  }
-  if (clics == 4) {
-    digitalWrite(pinled,0);
-    digitalWrite(pinledr1,1);
-    digitalWrite(pinledr2,1);
-    digitalWrite(pinledr3,0);
-    digitalWrite(pinledr4,0);
-  }
-  if (clics == 5) {
-    digitalWrite(pinled,0);
-    digitalWrite(pinledr1,1);
-    digitalWrite(pinledr2,0);
-    digitalWrite(pinledr3,1);
-    digitalWrite(pinledr4,1);
-  }
-  if (clics == 6) {
-    digitalWrite(pinled,0);
-    digitalWrite(pinledr1,1);
-    digitalWrite(pinledr2,0);
-    digitalWrite(pinledr3,1);
-    digitalWrite(pinledr4,0);
-  }
-  if (clics == 7) {
-    digitalWrite(pinled,0);
-    digitalWrite(pinledr1,1);
-    digitalWrite(pinledr2,0);
-    digitalWrite(pinledr3,0);
-    digitalWrite(pinledr4,1);
-  }
-  if (clics >7) {
-    digitalWrite(pinled,1);
-    digitalWrite(pinledr1,0);
-    digitalWrite(pinledr2,0);
-    digitalWrite(pinledr3,0);
-    digitalWrite(pinledr4,0);
-  }
-
-  // Botón reset
-  if (digitalRead(bottom3)==HIGH) {
-     clics = 0 ;   
-     delay(200);
-     digitalWrite(pinled,LOW);
-     digitalWrite(pinledr1,LOW);
-     digitalWrite(pinledr2,LOW);
-     digitalWrite(pinledr3,LOW);
-     digitalWrite(pinledr4,LOW);
+// Botón reset
+  if (digitalRead(bottom3) == HIGH) {
+    clics = 0 ;   
+    delay(200);
+    digitalWrite(pinled,LOW);
+    digitalWrite(pinledr1,LOW);
+    digitalWrite(pinledr2,LOW);
+    digitalWrite(pinledr3,LOW);
+    digitalWrite(pinledr4,LOW);
   }
 }
